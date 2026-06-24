@@ -17,7 +17,7 @@ class Member:
         member_database.update_member(first_name, last_name, email, phone, created_at, member_id)
 
     #delete
-    def remove_member (self, member_id):
+    def delete_member (self, member_id):
         member_database.delete_member(member_id)
 
     #get all
