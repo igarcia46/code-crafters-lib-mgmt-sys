@@ -18,7 +18,7 @@ class LibraryGUI:
         self.root.geometry("700x550")
 
         # BACKGROUND IMAGE
-        bg_image = Image.open("background_clean.png")
+        bg_image = Image.open("background_public_library.png")
         bg_image = bg_image.resize((700, 550))
         self.bg = ImageTk.PhotoImage(bg_image)
 
