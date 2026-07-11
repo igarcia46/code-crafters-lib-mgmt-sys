@@ -1,5 +1,10 @@
 import tkinter as tk
 import Member
+import MemberService
+import Book
+import BookService
+import Checkout
+import CheckoutService
 
 class LibraryProgram:
     def __init__(self):
@@ -56,7 +61,7 @@ class LibraryProgram:
             id = self.id_entry.get()
             try:
                 id = int(id)
-                self.member.Member.delete_member(self.member, id)
+                MemberService.MemberService.delete_member(self.member, id)
                 print("Member deleted")
             except:
                 print("invalid ID")
@@ -76,7 +81,7 @@ class LibraryProgram:
     # Interacting with the database
     def add_member(self):
           # ADDING TEST DATA. REPLACE WITH REAL ADD FORM AND FUNCTION LATER
-          self.member.Member.add_member(self.member, "Jane", "Doe", "Test", "123-456-7890", "2026-06-23")
+          MemberService.MemberService.add_member(MemberService.MemberService, "Jane", "Doe", "Test", "123-456-7890", "2026-06-23")
           print("Test Member Added")
 
     
