@@ -1,0 +1,33 @@
+@startuml
+title Library Management System Component Diagram
+
+left to right direction
+
+actor Librarian
+
+component "Tkinter GUI" as GUI
+component "Service Layer" as ServiceLayer {
+  component "BookService" as BookService
+  component "MemberService" as MemberService
+  component "CheckoutService" as CheckoutService
+}
+
+component "Persistence Layer" as PersistenceLayer {
+  component "LibraryDatabase" as LibraryDatabase
+}
+
+database "SQLite Database" as SQLite
+
+Librarian --> GUI : uses
+
+GUI --> BookService
+GUI --> MemberService
+GUI --> CheckoutService
+
+BookService --> LibraryDatabase 
+MemberService --> LibraryDatabase 
+CheckoutService --> LibraryDatabase 
+
+LibraryDatabase --> SQLite : SQL queries
+
+@enduml

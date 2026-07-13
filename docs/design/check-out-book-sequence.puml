@@ -1,0 +1,47 @@
+@startuml
+title Sequence Diagram - Check Out Book Process
+
+actor Librarian
+participant "Tkinter GUI" as GUI
+participant "CheckoutService" as CheckoutService
+participant "LibraryDatabase" as DB
+database "SQLite Database" as SQLite
+
+Librarian -> GUI: Enter book search criteria
+GUI -> CheckoutService: searchBook(criteria)
+CheckoutService -> DB: getBook(criteria)
+DB -> SQLite: SELECT * FROM Books WHERE Title = ?
+SQLite --> DB: Book result
+DB --> CheckoutService: Book data
+CheckoutService --> GUI: Display book information
+
+GUI -> CheckoutService: checkAvailability(bookId)
+CheckoutService -> DB: getActiveCheckout(bookId)
+DB -> SQLite: SELECT active checkout
+SQLite --> DB: Checkout result
+DB --> CheckoutService: Availability status
+CheckoutService --> GUI: Book availability
+
+Librarian -> GUI: Enter member search criteria
+GUI -> CheckoutService: searchMember(criteria)
+CheckoutService -> DB: getMember(criteria)
+DB -> SQLite: SELECT * FROM MembersWHERE MemberID = ?
+SQLite --> DB: Member result
+DB --> CheckoutService: Member data
+CheckoutService --> GUI: Display member information
+
+Librarian -> GUI: Confirm checkout
+GUI -> CheckoutService: checkoutBook(bookId, memberId)
+CheckoutService -> DB: createCheckout(bookId, memberId, dueDate)
+DB -> SQLite: INSERT checkout record
+SQLite --> DB: Checkout saved
+
+CheckoutService -> DB: updateBookStatus(bookId, "Checked Out")
+DB -> SQLite: UPDATE book status
+SQLite --> DB: Book updated
+
+DB --> CheckoutService: Checkout complete
+CheckoutService --> GUI: Checkout confirmation
+GUI --> Librarian: Display success message
+
+@enduml

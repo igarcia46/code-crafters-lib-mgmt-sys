@@ -1,0 +1,91 @@
+@startuml
+title Library Management System Class Diagram
+
+package "Service Layer" {
+  class BookService <<service>> {
+    + addBook(book: Book)
+    + updateBook(book: Book)
+    + removeBook(bookId: int)
+    + searchBooks(criteria: String)
+    + checkAvailability(bookId: int)
+  }
+
+  class MemberService <<service>> {
+    + registerMember(member: Member)
+    + updateMember(member: Member)
+    + searchMembers(criteria: String)
+  }
+
+  class CheckoutService <<service>> {
+    + checkOutBook(bookId: int, memberId: int)
+    + returnBook(checkoutId: int)
+    + getCheckoutHistory(memberId: int)
+    + getOverdueBooks()
+  }
+}
+
+package "Domain Model" {
+  class Book {
+    - bookId: int
+    - title: String
+    - author: String
+    - isbn: String
+    - genre: String
+    - status: String
+    + getBookInfo()
+    + updateStatus()
+  }
+
+  class Member {
+    - memberId: int
+    - firstName: String
+    - lastName: String
+    - phoneNumber: String
+    - email: String
+    + getMemberInfo()
+    + updateMemberInfo()
+  }
+
+  class Checkout {
+    - checkoutId: int
+    - bookId: int
+    - memberId: int
+    - checkoutDate: Date
+    - dueDate: Date
+    - returnDate: Date
+    + calculateDueDate()
+    + markReturned()
+    + isOverdue()
+  }
+}
+
+class LibraryDatabase <<repository>> {
+  + connect()
+  + executeQuery(query: String)
+  + executeUpdate(query: String)
+  + closeConnection()
+  + getConnection()
+}
+
+class SQLiteDatabase <<database>> {
+  - databaseFile: String
+}
+
+BookService ..> Book
+MemberService ..> Member
+CheckoutService ..> Checkout
+CheckoutService ..> Book
+CheckoutService ..> Member
+
+BookService ..> LibraryDatabase
+MemberService ..> LibraryDatabase
+CheckoutService ..> LibraryDatabase
+
+LibraryDatabase ..> SQLiteDatabase
+
+Member "1" --> "0..*" Checkout : has
+Book "1" --> "0..*" Checkout : checkout records
+Checkout "1" --> "1" Book : references
+Checkout "1" --> "1" Member : references
+
+@enduml

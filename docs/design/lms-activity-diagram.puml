@@ -1,0 +1,36 @@
+@startuml
+title Activity Diagram - Check Out Book Process
+
+start
+
+:Librarian searches for book;
+
+if (Book found?) then (Yes)
+  :System displays book information;
+else (No)
+  :Display "Book not found" message;
+  stop
+endif
+
+if (Book available?) then (Yes)
+  :Librarian searches for member;
+else (No)
+  :Display "Book is already checked out" message;
+  stop
+endif
+
+if (Member found?) then (Yes)
+  :System displays member information;
+else (No)
+  :Display "Member not found" message;
+  stop
+endif
+
+:Librarian confirms checkout;
+:System creates checkout record;
+:System updates book status to checked out;
+:System displays checkout confirmation;
+
+stop
+
+@enduml
