@@ -1,0 +1,49 @@
+@startuml
+top to bottom direction
+
+actor Librarian
+
+rectangle "Library Management System" {
+
+  package "Member Management" {
+    usecase "Register Member" as RegisterMember
+    usecase "Search Members" as SearchMembers
+    usecase "Update Member Information" as UpdateMember
+  }
+
+  package "Book Management" {
+    usecase "Search Books" as SearchBooks
+    usecase "View Book Availability" as ViewAvailability
+    usecase "Add Book" as AddBook
+    usecase "Update Book Information" as UpdateBook
+    usecase "Remove Book" as RemoveBook
+  }
+
+  package "Checkout Management" {
+    usecase "Check Out Book" as CheckoutBook
+    usecase "Return Book" as ReturnBook
+    usecase "View Checkout History" as CheckoutHistory
+    usecase "View Overdue Books" as OverdueBooks
+  }
+}
+
+Librarian --> RegisterMember
+Librarian --> SearchMembers
+Librarian --> UpdateMember
+Librarian --> SearchBooks
+Librarian --> ViewAvailability
+Librarian --> AddBook
+Librarian --> UpdateBook
+Librarian --> RemoveBook
+Librarian --> CheckoutBook
+Librarian --> ReturnBook
+Librarian --> CheckoutHistory
+Librarian --> OverdueBooks
+
+CheckoutBook ..> SearchBooks : <<include>>
+CheckoutBook ..> ViewAvailability : <<include>>
+
+RegisterMember -[hidden]down-> CheckoutBook
+CheckoutBook -[hidden]down-> SearchBooks
+
+@enduml
