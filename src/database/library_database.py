@@ -5,9 +5,9 @@ from typing import Any, Optional
 
 
 class LibraryDatabase:
-    """
-    Manages SQLite database connections and schema creation.
-    """
+    # ==========================================================
+    # Manages SQLite database connections and schema creation
+    # ==========================================================
 
     def __init__(self, database_path: Optional[str] = None) -> None:
         if database_path is None:
@@ -16,15 +16,11 @@ class LibraryDatabase:
 
         self.database_path = database_path
 
-        # Ensure the directory containing the database exists.
+        # ensure the directory containing the database exists
         Path(self.database_path).parent.mkdir(parents=True, exist_ok=True)
 
     def connect(self) -> sqlite3.Connection:
-        """
-        Creates and returns a configured SQLite connection.
-
-        The caller is responsible for closing the connection.
-        """
+        # caller is responsible for closing the connection.
 
         connection = sqlite3.connect(self.database_path)
         connection.row_factory = sqlite3.Row
@@ -37,26 +33,22 @@ class LibraryDatabase:
         query: str,
         parameters: tuple[Any, ...] = (),
     ) -> list[dict[str, Any]]:
-        """
-        Executes a SELECT query and returns rows as dictionaries.
-        """
+        # executes a SELECT query and returns rows as dictionaries
 
         with closing(self.connect()) as connection:
             cursor = connection.execute(query, parameters)
             rows = cursor.fetchall()
 
-            return [dict(row) for row in rows]
+            return [
+                dict(row) for row in rows
+            ]  # returns dictionaries for now until models are created
 
     def execute_non_query(
         self,
         query: str,
         parameters: tuple[Any, ...] = (),
     ) -> int:
-        """
-        Executes an INSERT, UPDATE, or DELETE statement.
-
-        Returns the ID of an inserted record when applicable.
-        """
+        # executes an INSERT, UPDATE, or DELETE statement and returns the ID of an inserted record when applicable
 
         with closing(self.connect()) as connection:
             try:
@@ -68,9 +60,7 @@ class LibraryDatabase:
                 raise
 
     def initialize_database(self) -> None:
-        """
-        Creates all required database tables and indexes.
-        """
+        # creates all required database tables and indexes
 
         create_books_table = """
         CREATE TABLE IF NOT EXISTS books (
