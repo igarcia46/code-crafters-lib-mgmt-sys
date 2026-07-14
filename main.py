@@ -9,7 +9,9 @@ def main() -> None:
     database_service = DatabaseService(database)
 
     print("db initialized successfully")
-    print(f"books currently stored: {len(database_service.get_all_books())}") # test connection
+    print(
+        f"books currently stored: {len(database_service.get_all_books())}"
+    )  # test connection
 
 
 if __name__ == "__main__":

@@ -259,9 +259,7 @@ class DatabaseService:
             ).fetchone()
 
             if member is None:
-                raise ValueError(
-                    f"Member with ID {member_id} does not exist."
-                )
+                raise ValueError(f"Member with ID {member_id} does not exist.")
 
             cursor = connection.execute(
                 """
@@ -309,9 +307,7 @@ class DatabaseService:
             ).fetchone()
 
             if checkout is None:
-                raise ValueError(
-                    f"Checkout with ID {checkout_id} does not exist."
-                )
+                raise ValueError(f"Checkout with ID {checkout_id} does not exist.")
 
             if checkout["return_date"] is not None:
                 raise ValueError("This book has already been returned.")
