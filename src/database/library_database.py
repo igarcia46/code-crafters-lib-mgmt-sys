@@ -80,7 +80,7 @@ class LibraryDatabase:
             first_name TEXT NOT NULL,
             last_name TEXT NOT NULL,
             phone TEXT,
-            email TEXT NOT NULL UNIQUE
+            email TEXT NOT NULL
         );
         """
 

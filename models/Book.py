@@ -1,5 +1,3 @@
-from src.database.database_service import DatabaseService
-
 class Book:
     def __init__(self, book_id, title, author, isbn, genre, status):
         self.book_id = book_id

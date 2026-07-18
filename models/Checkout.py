@@ -13,12 +13,11 @@ class Checkout:
         return self.returnDate
 
     def markReturned(self):
-        pass
-    #PLACEHOLDER
+        self.returnDate = date.today()
 
     def isOverdue(self):
         today = date.today()
-        if today > self.returnDate:
+        if today > self.dueDate:
             return True
         else:
             return False

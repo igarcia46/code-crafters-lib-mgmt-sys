@@ -10,7 +10,7 @@ class MemberService:
         return DatabaseService.get_member_by_id(self.database, member_id)
 
     def updateMember(self, member_id, first_name, last_name, phone, email):
-         return DatabaseService.update_member(self.database, first_name, last_name, phone, email)
+         return DatabaseService.update_member(self.database, member_id, first_name, last_name, phone, email)
     
     def removeMember(self, member_id):
         return DatabaseService.delete_member(self.database, member_id)
