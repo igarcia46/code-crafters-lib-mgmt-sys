@@ -1,3 +1,4 @@
+from datetime import date
 
 class Checkout:
     def __init__(self, checkout_id, book_id, member_id, checkoutDate, dueDate, returnDate):
@@ -8,17 +9,19 @@ class Checkout:
         self.dueDate = dueDate
         self.returnDate = returnDate
 
-    def calculateDueDate():
+    def calculateDueDate(self):
+        return self.returnDate
+
+    def markReturned(self):
         pass
     #PLACEHOLDER
 
-    def markReturned():
-        pass
-    #PLACEHOLDER
-
-    def isOverdue():
-        pass
-    #PLACEHOLDER
+    def isOverdue(self):
+        today = date.today()
+        if today > self.returnDate:
+            return True
+        else:
+            return False
 
 
         

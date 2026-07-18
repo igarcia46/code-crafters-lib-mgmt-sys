@@ -5,7 +5,6 @@ class BookService:
         self.database = database
 
     def addBook(self, title, author, isbn, genre):
-        #first arguement should be the database object
         return DatabaseService.add_book(self.database, title, author, isbn, genre)
 
     def updateBook(self, book_id, title, author, isbn, genre):
@@ -26,3 +25,6 @@ class BookService:
             return True
         else:
             return False
+        
+    def getAllBooks(self):
+        return DatabaseService.get_all_books(self.database)

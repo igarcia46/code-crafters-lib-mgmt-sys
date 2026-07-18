@@ -1,19 +1,17 @@
-import LibraryDatabase
-import datetime
+from src.database.database_service import DatabaseService
 
 class CheckoutService:
-    def checkOutBook(book_id, member_id):
-        pass
+    def __init__(self, database):
+        self.database = database
 
-    #PLACEHOLDER
-    def returnBook(checkout_id):
-        pass
-    #PLACEHOLDER
+    def checkOutBook(self, book_id, member_id):
+        return DatabaseService.checkout_book(self.database, book_id, member_id)
 
-    def getCheckoutHistory(member_id):
-        pass
-    #PLACEHOLDER
+    def returnBook(self, checkout_id):
+        return DatabaseService.return_book(self.database, checkout_id)
+    
+    def getCheckoutHistory(self):
+        return DatabaseService.get_checkout_history(self.database)
 
-    def getOverdueBooks():
-        return LibraryDatabase.executeQuery(f"SELECT * FROM Checkouts WHERE dueDate < {datetime.datetime.now()}", None)
-    #PLACEHOLDER
+    def getOverdueBooks(self):
+        return DatabaseService.get_overdue_checkouts(self.database)

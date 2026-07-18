@@ -1,17 +1,23 @@
-import sqlite3
-import LibraryDatabase
+from src.database.database_service import DatabaseService
 
 class MemberService:
-    def add_member(self, first_name, last_name, email, phone, created_at):
-            LibraryDatabase.executeUpdate("""
-                INSERT INTO Members (first_name, last_name, email, phone, created_at)
-                VALUES (?, ?, ?, ?, ?)
-            """, (first_name, last_name, email, phone, created_at))
+    def __init__(self, database):
+         self.database = database
 
-    # get
-    def get_member_by_id(self, member_id):
-        return LibraryDatabase.executeQuery(""" SELECT * FROM Members WHERE member_id = ? """, (member_id,))
+    def addMember(self, first_name, last_name, phone, email):
+           return DatabaseService.add_member(self.database, first_name, last_name, phone, email)
+    def getMemberById(self, member_id):
+        return DatabaseService.get_member_by_id(self.database, member_id)
 
-    # delete
-    def delete_member(self, member_id):
-        LibraryDatabase.executeUpdate( " DELETE FROM Members WHERE member_id = ?", (member_id,))
+    def updateMember(self, member_id, first_name, last_name, phone, email):
+         return DatabaseService.update_member(self.database, first_name, last_name, phone, email)
+    
+    def removeMember(self, member_id):
+        return DatabaseService.delete_member(self.database, member_id)
+    
+    def searchMember(self, search_term):
+        return DatabaseService.search_members(self.database,search_term)
+    
+    def getAllMembers(self):
+         return DatabaseService.get_all_members(self.database)
+    
