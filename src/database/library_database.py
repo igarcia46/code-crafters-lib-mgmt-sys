@@ -67,7 +67,7 @@ class LibraryDatabase:
             book_id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             author TEXT NOT NULL,
-            isbn TEXT NOT NULL UNIQUE,
+            isbn TEXT NOT NULL,
             genre TEXT,
             status TEXT NOT NULL DEFAULT 'AVAILABLE'
                 CHECK (status IN ('AVAILABLE', 'CHECKED_OUT'))
@@ -80,7 +80,7 @@ class LibraryDatabase:
             first_name TEXT NOT NULL,
             last_name TEXT NOT NULL,
             phone TEXT,
-            email TEXT NOT NULL UNIQUE
+            email TEXT NOT NULL
         );
         """
 
