@@ -4,12 +4,12 @@ from src.services.BookService import BookService
 from src.services.MemberService import MemberService
 from src.services.CheckoutService import CheckoutService
 
-
 # views are still being developed. Only the MemberView is currently functional.
 from src.ui.member_view import MemberView
-#from src.ui.book_view import BookView
-#from src.ui.checkout_view import CheckoutView
-#from src.ui.reports_view import ReportsView
+
+# from src.ui.book_view import BookView
+# from src.ui.checkout_view import CheckoutView
+# from src.ui.reports_view import ReportsView
 
 
 class LibraryGUI:
@@ -17,7 +17,6 @@ class LibraryGUI:
         self.root = tk.Tk()
         self.root.title("Library Inventory")
         self.root.geometry("1100x715")
-
 
         # initialize services
         self.book_service = BookService(database)
