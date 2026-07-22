@@ -16,7 +16,7 @@ class LibraryGUI:
     def __init__(self, database):
         self.root = tk.Tk()
         self.root.title("Library Inventory")
-        self.root.geometry("1000x650")
+        self.root.geometry("1100x715")
 
         self.book_service = BookService(database)
         self.member_service = MemberService(database)
