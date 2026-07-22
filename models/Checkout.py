@@ -1,7 +1,10 @@
 from datetime import date
 
+
 class Checkout:
-    def __init__(self, checkout_id, book_id, member_id, checkoutDate, dueDate, returnDate):
+    def __init__(
+        self, checkout_id, book_id, member_id, checkoutDate, dueDate, returnDate
+    ):
         self.checkout_id = checkout_id
         self.book_id = book_id
         self.member_id = member_id
@@ -21,6 +24,3 @@ class Checkout:
             return True
         else:
             return False
-
-
-        

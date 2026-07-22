@@ -8,11 +8,19 @@ class Book:
         self.status = status
 
     def getBookInfo(self):
-        return [self.book_id, self.title, self.author, self.isbn, self.genre, self.status]
+        return [
+            self.book_id,
+            self.title,
+            self.author,
+            self.isbn,
+            self.genre,
+            self.status,
+        ]
 
     def updateStatus(self):
-        if(self.status == "AVAILABLE"):
+        if self.status == "AVAILABLE":
             self.status = "CHECKED_OUT"
-        elif(self.status == "CHECKED_OUT"):
+        elif self.status == "CHECKED_OUT":
             self.status = "AVAILABLE"
-    #PLACEHOLDER
+
+    # PLACEHOLDER

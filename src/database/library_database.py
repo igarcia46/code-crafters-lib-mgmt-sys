@@ -59,6 +59,22 @@ class LibraryDatabase:
                 connection.rollback()
                 raise
 
+    def execute_modify(
+        self,
+        query: str,
+        parameters: tuple[Any, ...] = (),
+    ) -> int:
+        # executes an UPDATE or DELETE statement and returns the number of affected rows
+
+        with closing(self.connect()) as connection:
+            try:
+                cursor = connection.execute(query, parameters)
+                connection.commit()
+                return cursor.rowcount
+            except Exception:
+                connection.rollback()
+                raise
+
     def initialize_database(self) -> None:
         # creates all required database tables and indexes
 
