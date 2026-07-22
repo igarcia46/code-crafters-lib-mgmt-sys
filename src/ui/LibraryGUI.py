@@ -18,16 +18,17 @@ class LibraryGUI:
         self.root.title("Library Inventory")
         self.root.geometry("1100x715")
 
+
+        # initialize services
         self.book_service = BookService(database)
         self.member_service = MemberService(database)
         self.checkout_service = CheckoutService(database)
 
+        # create navigation buttons
         self.create_navigation()
 
         self.content_frame = tk.Frame(self.root)
         self.content_frame.pack(fill="both", expand=True)
-
-        self.show_books()
 
         self.root.mainloop()
 
@@ -35,7 +36,7 @@ class LibraryGUI:
         nav_frame = tk.Frame(self.root)
         nav_frame.pack(fill="x", padx=10, pady=10)
 
-        # Use grid so buttons expand equally when the window is resized
+        # use grid so buttons expand equally when the window is resized
         for i in range(4):
             nav_frame.columnconfigure(i, weight=1)
 
@@ -55,12 +56,13 @@ class LibraryGUI:
             row=0, column=3, sticky="ew", padx=5
         )
 
+    # clear the content frame before displaying a new view
     def clear_content(self):
         for widget in self.content_frame.winfo_children():
             widget.destroy()
 
     def show_books(self):
-        # BookView is still being developed, leave this view empty for now
+        # BookView is being developed, leave this view empty for now
         self.clear_content()
 
     def show_members(self):

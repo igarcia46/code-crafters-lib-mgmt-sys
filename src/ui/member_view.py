@@ -10,7 +10,7 @@ class MemberView(tk.Frame):
         self.create_member_menu()
 
     def show_dialog(self, title, message, confirm=False):
-        """Show a modal dialog centered over the main application window."""
+        """to show a modal dialog centered over the main application window"""
         owner = self.winfo_toplevel()
         dialog = tk.Toplevel(owner)
         dialog.withdraw()
