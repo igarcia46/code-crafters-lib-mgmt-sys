@@ -116,8 +116,33 @@ class MemberView(tk.Frame):
             font=("Arial", 18, "bold"),
         ).pack(pady=20)
 
-        form_frame = tk.Frame(self)
-        form_frame.pack()
+        form_frame = tk.Frame(
+            self,
+            bg="white",
+            bd=1,
+            relief="solid",
+            padx=28,
+            pady=24,
+        )
+        form_frame.pack(padx=20, pady=(5, 20))
+        form_frame.columnconfigure(1, weight=1)
+
+        tk.Label(
+            form_frame,
+            text="Member Details",
+            font=("Arial", 11, "bold"),
+            bg="#d7e3f1",
+            fg="#1f2933",
+            anchor="w",
+            padx=10,
+            pady=8,
+        ).grid(
+            row=0,
+            column=0,
+            columnspan=2,
+            sticky="ew",
+            pady=(0, 18),
+        )
 
         fields = [
             "First Name",
@@ -128,28 +153,59 @@ class MemberView(tk.Frame):
 
         self.entries = {}
 
-        for row, field in enumerate(fields):
+        for row, field in enumerate(fields, start=1):
             tk.Label(
                 form_frame,
-                text=field,
-            ).grid(row=row, column=0, sticky="e", padx=10, pady=5)
+                text=f"{field}:",
+                font=("Arial", 10, "bold"),
+                bg="white",
+                fg="#1f2933",
+            ).grid(row=row, column=0, sticky="e", padx=(0, 14), pady=8)
 
-            entry = tk.Entry(form_frame, width=30)
-            entry.grid(row=row, column=1, padx=10, pady=5)
+            entry = tk.Entry(
+                form_frame,
+                width=32,
+                font=("Arial", 10),
+                relief="solid",
+                bd=1,
+            )
+            entry.grid(row=row, column=1, sticky="ew", pady=8, ipady=5)
 
             self.entries[field] = entry
 
-        tk.Button(
-            form_frame,
-            text="Save Member",
-            command=self.add_member,
-        ).grid(row=len(fields), column=1, pady=15)
+        button_frame = tk.Frame(form_frame, bg="white")
+        button_frame.grid(
+            row=len(fields) + 1,
+            column=0,
+            columnspan=2,
+            pady=(20, 0),
+        )
 
         tk.Button(
-            form_frame,
+            button_frame,
+            text="Save Member",
+            command=self.add_member,
+            width=14,
+            font=("Arial", 11, "bold"),
+            bg="#2f6fad",
+            fg="white",
+            activebackground="#245a8d",
+            activeforeground="white",
+            cursor="hand2",
+        ).pack(side="left", padx=6, ipady=4)
+
+        tk.Button(
+            button_frame,
             text="Back",
             command=self.create_member_menu,
-        ).grid(row=len(fields) + 1, column=1)
+            width=14,
+            font=("Arial", 11, "bold"),
+            bg="#d7e3f1",
+            fg="#1f2933",
+            activebackground="#bdd0e5",
+            activeforeground="#1f2933",
+            cursor="hand2",
+        ).pack(side="left", padx=6, ipady=4)
 
     def add_member(self):
         try:
@@ -193,29 +249,77 @@ class MemberView(tk.Frame):
             font=("Arial", 18, "bold"),
         ).pack(pady=20)
 
-        tk.Label(
+        form_frame = tk.Frame(
             self,
-            text="Member ID",
-        ).pack()
+            bg="white",
+            bd=1,
+            relief="solid",
+            padx=28,
+            pady=24,
+        )
+        form_frame.pack(padx=20, pady=(5, 20))
 
-        self.member_id_entry = tk.Entry(self)
-        self.member_id_entry.pack(pady=5)
+        tk.Label(
+            form_frame,
+            text="Member Lookup",
+            font=("Arial", 11, "bold"),
+            bg="#d7e3f1",
+            fg="#1f2933",
+            anchor="w",
+            padx=10,
+            pady=8,
+        ).grid(row=0, column=0, columnspan=2, sticky="ew", pady=(0, 18))
+
+        tk.Label(
+            form_frame,
+            text="Member ID:",
+            font=("Arial", 10, "bold"),
+            bg="white",
+            fg="#1f2933",
+        ).grid(row=1, column=0, padx=(0, 14), pady=8)
+
+        self.member_id_entry = tk.Entry(
+            form_frame,
+            width=24,
+            font=("Arial", 10),
+            relief="solid",
+            bd=1,
+        )
+        self.member_id_entry.grid(row=1, column=1, pady=8, ipady=5)
+
+        button_frame = tk.Frame(form_frame, bg="white")
+        button_frame.grid(
+            row=2,
+            column=0,
+            columnspan=2,
+            pady=(20, 0),
+        )
 
         tk.Button(
-            self,
+            button_frame,
             text="Delete Member",
             command=self.delete_member,
+            width=14,
+            font=("Arial", 11, "bold"),
             bg="#d9534f",
             fg="white",
             activebackground="#c9302c",
             activeforeground="white",
-        ).pack(pady=10)
+            cursor="hand2",
+        ).pack(side="left", padx=6, ipady=4)
 
         tk.Button(
-            self,
+            button_frame,
             text="Back",
             command=self.create_member_menu,
-        ).pack()
+            width=14,
+            font=("Arial", 11, "bold"),
+            bg="#d7e3f1",
+            fg="#1f2933",
+            activebackground="#bdd0e5",
+            activeforeground="#1f2933",
+            cursor="hand2",
+        ).pack(side="left", padx=6, ipady=4)
 
     def delete_member(self):
         try:
@@ -273,11 +377,42 @@ class MemberView(tk.Frame):
             "phone",
         )
 
+        table_frame = tk.Frame(self)
+        table_frame.pack(
+            fill="both",
+            expand=True,
+            padx=20,
+            pady=10,
+        )
+
+        table_style = ttk.Style(self)
+        table_style.configure(
+            "Members.Treeview.Heading",
+            background="#d7e3f1",
+            foreground="#1f2933",
+            font=("Arial", 10, "bold"),
+            relief="raised",
+            borderwidth=1,
+            padding=(8, 7),
+        )
+        table_style.map(
+            "Members.Treeview.Heading",
+            background=[("active", "#bdd0e5")],
+        )
+
         tree = ttk.Treeview(
-            self,
+            table_frame,
             columns=columns,
             show="headings",
+            style="Members.Treeview",
         )
+
+        scrollbar = ttk.Scrollbar(
+            table_frame,
+            orient="vertical",
+            command=tree.yview,
+        )
+        tree.configure(yscrollcommand=scrollbar.set)
 
         tree.heading("member_id", text="ID")
         tree.heading("first_name", text="First Name")
@@ -286,11 +421,11 @@ class MemberView(tk.Frame):
         tree.heading("phone", text="Phone")
 
         tree.pack(
+            side="left",
             fill="both",
             expand=True,
-            padx=20,
-            pady=10,
         )
+        scrollbar.pack(side="right", fill="y")
 
         members = self.member_service.getAllMembers()
 
@@ -311,4 +446,11 @@ class MemberView(tk.Frame):
             self,
             text="Back",
             command=self.create_member_menu,
-        ).pack(pady=10)
+            width=14,
+            font=("Arial", 11, "bold"),
+            bg="#2f6fad",
+            fg="white",
+            activebackground="#245a8d",
+            activeforeground="white",
+            cursor="hand2",
+        ).pack(pady=(10, 15), ipadx=6, ipady=4)
