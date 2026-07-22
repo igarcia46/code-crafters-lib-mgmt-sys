@@ -190,13 +190,13 @@ class DatabaseService:
             (first_name, last_name, phone, email, member_id),
         )
 
-    def delete_member(self, member_id: int) -> None:
+    def delete_member(self, member_id: int) -> int:
         query = """
         DELETE FROM members
         WHERE member_id = ?;
         """
 
-        self.database.execute_non_query(query, (member_id,))
+        return self.database.execute_modify(query, (member_id,))
 
     def search_members(
         self,

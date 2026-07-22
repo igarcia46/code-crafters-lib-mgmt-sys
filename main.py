@@ -8,7 +8,7 @@ from models.Book import Book
 from models.Member import Member
 from models.Checkout import Checkout
 
-from LibraryGUI import LibraryGUI
+from src.ui.LibraryGUI import LibraryGUI
 
 def main() -> None:
     database = LibraryDatabase()
