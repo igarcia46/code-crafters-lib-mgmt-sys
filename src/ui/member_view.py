@@ -145,6 +145,7 @@ class MemberView(tk.Frame):
         )
 
         fields = [
+            "Member ID",
             "First Name",
             "Last Name",
             "Phone",
@@ -209,6 +210,7 @@ class MemberView(tk.Frame):
 
     def add_member(self):
         try:
+            member_id = self.entries["Member ID"].get().strip()
             first_name = self.entries["First Name"].get().strip()
             last_name = self.entries["Last Name"].get().strip()
             phone = self.entries["Phone"].get().strip()
