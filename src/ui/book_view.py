@@ -250,7 +250,8 @@ class BookView(tk.Frame):
 
     def edit_book(self):
         try:
-            self.book_service.updateBook(self.title_entry.get(),self.author_entry.get(),self.isbn_entry.get(),self.genre_entry.get())
+            book_id = int(self.book_id_entry.get())
+            self.book_service.updateBook(book_id, self.title_entry.get(),self.author_entry.get(),self.isbn_entry.get(),self.genre_entry.get())
             messagebox.showinfo("Success","Book updated.")
         except Exception as ex:
             messagebox.showerror("Error",str(ex))
