@@ -10,6 +10,7 @@ class Theme:
     ACCENT_HOVER = "#1d4ed8"
     DANGER = "#dc2626"
     DANGER_HOVER = "#b91c1c"
+    TEXT_MUTED_BG = "#e5e7eb"
     TEXT_DARK = "#111827"
     TEXT_MUTED = "#6b7280"
     FONT_FAMILY = "Segoe UI"
@@ -63,6 +64,12 @@ class CheckoutView(tk.Frame):
         checkout_btn.bind("<Leave>", lambda e: checkout_btn.configure(bg=Theme.ACCENT))
         checkout_btn.bind("<Button-1>", lambda e: self.handle_checkout())
 
+        self.error_label = tk.Label(
+            form_card, text="", bg=Theme.CARD_BG, fg=Theme.DANGER,
+            font=(Theme.FONT_FAMILY, 10),
+        )
+        self.error_label.grid(row=3, column=0, columnspan=3, sticky="w", padx=15, pady=(0, 10))
+
     # -----------------------------------------------------------------
     # List of active / past checkouts
     # -----------------------------------------------------------------
@@ -109,11 +116,15 @@ class CheckoutView(tk.Frame):
             self.make_checkout_row(record)
 
     def make_checkout_row(self, record):
-        # Adjust keys below if your CheckoutService returns different
-        # field names (e.g. from a sqlite3.Row or a plain tuple).
-        book_id = record.get("book_id", "N/A") if hasattr(record, "get") else record[0]
-        member_id = record.get("member_id", "N/A") if hasattr(record, "get") else record[1]
-        status = record.get("status", "N/A") if hasattr(record, "get") else record[2]
+        # Matches DatabaseService.get_checkout_history() columns exactly:
+        # checkout_id, book_title, member_name, checkout_date, due_date, return_date
+        checkout_id = record["checkout_id"]
+        book_title = record["book_title"]
+        member_name = record["member_name"]
+        due_date = record["due_date"]
+        return_date = record["return_date"]
+
+        status = "RETURNED" if return_date else "CHECKED OUT"
 
         row = tk.Frame(
             self.list_frame, bg=Theme.CARD_BG, highlightbackground=Theme.CARD_BORDER,
@@ -121,15 +132,26 @@ class CheckoutView(tk.Frame):
         )
         row.pack(fill="x", pady=5)
 
+        detail_text = f'"{book_title}"  →  {member_name}   |   Due: {due_date}'
+        if return_date:
+            detail_text += f"   |   Returned: {return_date}"
+
         info = tk.Label(
             row,
-            text=f"Book #{book_id}   →   Member #{member_id}   [{status}]",
+            text=detail_text,
             bg=Theme.CARD_BG, fg=Theme.TEXT_DARK, font=(Theme.FONT_FAMILY, 11),
             padx=15, pady=10,
         )
         info.pack(side="left")
 
-        if str(status).upper() != "RETURNED":
+        status_color = Theme.TEXT_MUTED if status == "RETURNED" else Theme.ACCENT
+        status_label = tk.Label(
+            row, text=f"[{status}]", bg=Theme.CARD_BG, fg=status_color,
+            font=(Theme.FONT_FAMILY, 10, "bold"),
+        )
+        status_label.pack(side="left", padx=10)
+
+        if status != "RETURNED":
             return_btn = tk.Label(
                 row, text="Return", bg=Theme.DANGER, fg="white",
                 font=(Theme.FONT_FAMILY, 10, "bold"), padx=12, pady=6, cursor="hand2",
@@ -137,17 +159,18 @@ class CheckoutView(tk.Frame):
             return_btn.pack(side="right", padx=10)
             return_btn.bind("<Enter>", lambda e, b=return_btn: b.configure(bg=Theme.DANGER_HOVER))
             return_btn.bind("<Leave>", lambda e, b=return_btn: b.configure(bg=Theme.DANGER))
-            return_btn.bind("<Button-1>", lambda e, bid=book_id: self.handle_return(bid))
+            return_btn.bind("<Button-1>", lambda e, cid=checkout_id: self.handle_return(cid))
 
     # -----------------------------------------------------------------
     # Actions
     # -----------------------------------------------------------------
     def handle_checkout(self):
+        self.error_label.configure(text="")
         book_id = self.book_id_entry.get().strip()
         member_id = self.member_id_entry.get().strip()
 
         if not book_id or not member_id:
-            messagebox.showwarning("Missing Info", "Please enter both a Book ID and Member ID.")
+            self.error_label.configure(text="Please enter both a Book ID and Member ID.")
             return
 
         try:
@@ -155,12 +178,14 @@ class CheckoutView(tk.Frame):
             self.book_id_entry.delete(0, tk.END)
             self.member_id_entry.delete(0, tk.END)
             self.refresh_list()
+        except ValueError as e:
+            self.error_label.configure(text=str(e))
         except Exception as e:
             messagebox.showerror("Checkout Failed", str(e))
 
-    def handle_return(self, book_id):
+    def handle_return(self, checkout_id):
         try:
-            self.checkout_service.returnBook(book_id)
+            self.checkout_service.returnBook(checkout_id)
             self.refresh_list()
         except Exception as e:
             messagebox.showerror("Return Failed", str(e))
