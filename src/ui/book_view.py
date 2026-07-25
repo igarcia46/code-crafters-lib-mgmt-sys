@@ -211,9 +211,9 @@ class BookView(tk.Frame):
 
         frm=tk.Frame(self,bg="white",padx=20,pady=20)
         frm.pack()
-        #self.e={}
-        #for i,n in enumerate(["Title","Author","ISBN","Genre"]):
-        #    tk.Label(frm,text=n,bg="white").grid(row=i,column=0,sticky="e",padx=5,pady=5)
+        self.e={}
+        for i,n in enumerate(["Title","Author","ISBN","Genre"]):
+            tk.Label(frm,text=n,bg="white").grid(row=i,column=0,sticky="e",padx=5,pady=5)
             
         self.title_entry = tk.Entry(frm, width = 35)
         self.title_entry.grid(row = 0, column = 1, pady=5)
@@ -224,12 +224,19 @@ class BookView(tk.Frame):
         self.genre_entry = tk.Entry(frm, width = 35)
         self.genre_entry.grid(row = 3, column = 1, pady=5)
         
-        tk.Button(frm,text="Save",command=self.edit_book).grid(row=5,column=0,pady=10)
-        tk.Button(frm,text="Back",command=self.create_menu).grid(row=5,column=1)
+        tk.Button(frm,text="Save",command=self.edit_book,
+                  width=14,
+                  font=("Arial", 11, "bold"),
+                  bg="#d7e3f1",
+                  fg="#1f2933",
+                  activebackground="#bdd0e5",
+                  activeforeground="#1f2933",
+                  cursor="hand2").grid(row=5,column=1,pady=10)
 
     def edit_entries(self):
+        book_id = self.book_id_entry.get()
         try:
-            book_id = int(self.book_id_entry.get())
+            book_id = int(book_id)
             book = self.book_service.getBookById(book_id)
     
             print(book["title"])
@@ -246,7 +253,10 @@ class BookView(tk.Frame):
             self.genre_entry.insert(0, book["genre"])
         
         except:
-            pass
+            self.show_dialog(
+                "Not Found",
+                f"No book with ID {book_id} was found.",
+                )
 
     def edit_book(self):
         try:
@@ -341,18 +351,15 @@ class BookView(tk.Frame):
         print("click")
         try:
             book_id = int(self.book_id_entry.get())
-            print(book_id)
             confirm = self.show_dialog(
                 "Confirm Deletion",
                 f"Are you sure you want to permanently delete book ID {book_id}?",
                 confirm=True,
             )
             if not confirm:
-                print("not confirm")
                 return
     
             deleted_rows = self.book_service.removeBook(book_id)
-            print(deleted_rows)
             if deleted_rows == 0:
                 self.show_dialog(
                     "Not Found",
@@ -380,5 +387,103 @@ class BookView(tk.Frame):
                 )
     
 
-    def show_search(self): self._placeholder("Search Book")
+    def show_search(self):
+        self.clear()
+    
+        tk.Label(
+                self,
+                text="Search Books",
+                font=("Arial", 18, "bold"),
+            ).pack(pady=20)
+    
+        form_frame = tk.Frame(
+                self,
+                bg="white",
+                bd=1,
+                relief="solid",
+                padx=28,
+                pady=24,
+            )
+        form_frame.pack(padx=20, pady=(5, 20))
+    
+        tk.Label(
+                form_frame,
+                text="Book Lookup",
+                font=("Arial", 11, "bold"),
+                bg="#d7e3f1",
+                fg="#1f2933",
+                anchor="w",
+                padx=10,
+                pady=8,
+            ).grid(row=0, column=0, columnspan=2, sticky="ew", pady=(0, 18))
+    
+        tk.Label(
+                form_frame,
+                text="Search:",
+                font=("Arial", 10, "bold"),
+                bg="white",
+                fg="#1f2933",
+            ).grid(row=1, column=0, padx=(0, 14), pady=8)
+    
+        self.book_search_query = tk.Entry(
+                form_frame,
+                width=24,
+                font=("Arial", 10),
+                relief="solid",
+                bd=1,
+            )
+        self.book_search_query.grid(row=1, column=1, pady=8, ipady=5)
+    
+        button_frame = tk.Frame(form_frame, bg="white")
+        button_frame.grid(
+                row=2,
+                column=0,
+                columnspan=2,
+                pady=(20, 0),
+            )
+    
+        tk.Button(
+                button_frame,
+                text="Back",
+                command=self.create_menu,
+                width=14,
+                font=("Arial", 11, "bold"),
+                bg="#d7e3f1",
+                fg="#1f2933",
+                activebackground="#bdd0e5",
+                activeforeground="#1f2933",
+                cursor="hand2",
+            ).pack(side="left", padx=6, ipady=4)
+
+        tk.Button(
+            button_frame,
+            text="Search",
+            command=self.show_search_results,
+            width=14,
+            font=("Arial", 11, "bold"),
+            bg="#215e26",
+            fg="white",
+            activebackground="#215e26",
+            activeforeground="white",
+            cursor="hand2",
+            ).pack(side="left", padx=6, ipady=4)
+
+
+    def show_search_results(self):
+        query = self.book_search_query.get()
+
+        cols=("ID","Title","Author","ISBN","Genre","Status")
+        tree=ttk.Treeview(self,columns=cols,show="headings")
+        for c in cols:
+            tree.heading(c,text=c)
+        tree.pack(fill="both",expand=True,padx=20,pady=20)
+        try:
+            for b in self.book_service.searchBook(query):
+                tree.insert("",tk.END,values=(b["book_id"],b["title"],b["author"],b["isbn"],b["genre"],b["status"]))
+        except:
+            self.show_dialog(
+                "Warning",
+                "No books found.",
+                )
+        
     def show_availability(self): self._placeholder("Availability")
