@@ -486,4 +486,18 @@ class BookView(tk.Frame):
                 "No books found.",
                 )
         
-    def show_availability(self): self._placeholder("Availability")
+    def show_availability(self): 
+        self.clear()
+        tk.Label(self,text="Available Books",font=("Segoe UI",18,"bold"),bg="#f3f4f6").pack()
+        cols=("ID","Title","Author","ISBN","Genre","Status")
+        tree=ttk.Treeview(self,columns=cols,show="headings")
+        for c in cols:
+            tree.heading(c,text=c)
+        tree.pack(fill="both",expand=True,padx=20,pady=20)
+        try:
+            for b in self.book_service.getAllBooks():
+                if self.book_service.checkAvailability(b["book_id"]):
+                    tree.insert("",tk.END,values=(b["book_id"],b["title"],b["author"],b["isbn"],b["genre"],b["status"]))
+        except:
+            pass
+        tk.Button(self,text="Back",command=self.create_menu).pack()
