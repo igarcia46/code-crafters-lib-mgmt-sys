@@ -89,7 +89,7 @@ class BookView(tk.Frame):
     def show_add(self):
         self.clear()
         tk.Label(self,text="Add Book",font=("Segoe UI",18,"bold"),bg="#f3f4f6").pack(pady=10)
-        frm=tk.Frame(self,bg="white",padx=20,pady=20)
+        frm=tk.Frame(self,bg="white",padx=20,pady=20,bd=1)
         frm.pack()
         self.e={}
         for i,n in enumerate(["Title","Author","ISBN","Genre"]):
@@ -114,7 +114,9 @@ class BookView(tk.Frame):
         tree=ttk.Treeview(self,columns=cols,show="headings")
         for c in cols:
             tree.heading(c,text=c)
-        tree.pack(fill="both",expand=True,padx=20,pady=20)
+            tree.column(c, width=120, minwidth=75, stretch=tk.YES, anchor='w')
+        
+        tree.pack(fill="both",pady=20)
         try:
             for b in self.book_service.getAllBooks():
                 tree.insert("",tk.END,values=(b["book_id"],b["title"],b["author"],b["isbn"],b["genre"],b["status"]))
@@ -239,13 +241,11 @@ class BookView(tk.Frame):
             book_id = int(book_id)
             book = self.book_service.getBookById(book_id)
     
-            print(book["title"])
+            
             self.title_entry.delete(0, tk.END)
             self.author_entry.delete(0, tk.END)
             self.isbn_entry.delete(0, tk.END)
             self.genre_entry.delete(0, tk.END)
-
-            print(book["title"])
 
             self.title_entry.insert(0, book["title"])
             self.author_entry.insert(0, book["author"])
@@ -348,7 +348,6 @@ class BookView(tk.Frame):
             ).pack(side="left", padx=6, ipady=4)
 
     def delete_book(self):
-        print("click")
         try:
             book_id = int(self.book_id_entry.get())
             confirm = self.show_dialog(
@@ -470,21 +469,35 @@ class BookView(tk.Frame):
 
 
     def show_search_results(self):
+        
         query = self.book_search_query.get()
-
-        cols=("ID","Title","Author","ISBN","Genre","Status")
-        tree=ttk.Treeview(self,columns=cols,show="headings")
-        for c in cols:
-            tree.heading(c,text=c)
-        tree.pack(fill="both",expand=True,padx=20,pady=20)
+        
         try:
-            for b in self.book_service.searchBook(query):
-                tree.insert("",tk.END,values=(b["book_id"],b["title"],b["author"],b["isbn"],b["genre"],b["status"]))
+            if len(self.book_service.searchBook(query)) == 0:
+                            self.show_dialog(
+                            "Warning",
+                            "No books found.",
+                            )
+            else:
+                self.clear()
+                cols=("ID","Title","Author","ISBN","Genre","Status")
+                tree=ttk.Treeview(self,columns=cols,show="headings")
+                for c in cols:
+                    tree.heading(c,text=c)
+                    tree.column(c, width=120, minwidth=75, stretch=tk.YES, anchor='w')
+                    tree.pack(fill="both",expand=True,padx=20,pady=20)
+                for b in self.book_service.searchBook(query):
+                    tree.insert("",tk.END,values=(b["book_id"],b["title"],b["author"],b["isbn"],b["genre"],b["status"]))
+
+                tk.Button(self,text="Back",command=self.show_search).pack()             
         except:
             self.show_dialog(
                 "Warning",
                 "No books found.",
                 )
+
+        
+            
         
     def show_availability(self): 
         self.clear()
@@ -493,6 +506,7 @@ class BookView(tk.Frame):
         tree=ttk.Treeview(self,columns=cols,show="headings")
         for c in cols:
             tree.heading(c,text=c)
+            tree.column(c, width=120, minwidth=75, stretch=tk.YES, anchor='w')
         tree.pack(fill="both",expand=True,padx=20,pady=20)
         try:
             for b in self.book_service.getAllBooks():

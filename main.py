@@ -26,52 +26,17 @@ def main() -> None:
         f"books currently stored: {len(database_service.get_all_books())}"
     )  # test connection
 
-    # testing book service
-    book_service.addBook("Test Book", "Jane Doe", "12345", "Genre")
-    book_service.updateBook(1, "Test Book Update", "Jane Doe", "8765", "Genre")
-    print(book_service.getBookById(1))
-    print(book_service.checkAvailability(1))
-    # book_service.removeBook(1)
+    if len(database_service.get_all_books()) == 0:
+        database_service.add_book("The Great Gatsby","F. Scott Fitzgerald", "11111","Fiction")
+        database_service.add_book("I Robot","Isaac Asimov","22222","Science Fiction")
+        database_service.add_book("The Hobbit","J.R.R. Tolkien","33333", "Fantasy")
+    if len(database_service.get_all_members()) ==0:
+        database_service.add_member("Jane","Doe","111-111-1111","JaneDoe@gmail.com")
+        database_service.add_member("Bob","Doe","222-222-2222","BobDoe@gmail.com")
+        database_service.add_member("Sue","Smith","333-333-3333","SueSmith@protonmail.com")
 
-    testBookQuery = book_service.getBookById(1)
-
-    # creating a book object
-    testBook = Book(
-        testBookQuery["book_id"],
-        testBookQuery["title"],
-        testBookQuery["author"],
-        testBookQuery["isbn"],
-        testBookQuery["genre"],
-        testBookQuery["status"],
-    )
-
-    # print the test book object before and after updating status
-    print(testBook.getBookInfo())
-    testBook.updateStatus()
-    print(testBook.getBookInfo())
-
-    # testing memember service
-    member_service.addMember("Jane", "Doe", "123-456-7890", "test@gmail.com")
-    member_service.updateMember(1, "Jane", "Doe", "098-765-4321", "test@gmail.com")
-    print(member_service.getMemberById(1))
-
-    # creating a member object
-    testMemberQuery = member_service.getMemberById(1)
-    testMember = Member(
-        testMemberQuery["member_id"],
-        testMemberQuery["first_name"],
-        testMemberQuery["last_name"],
-        testMemberQuery["email"],
-        testMemberQuery["phone"],
-    )
-    print(testMember)
-    testMember.update_member("Jane", "Doe", "123-456-7890", "test@gmail.com")
-    print(testMember.phone)
-
-    # checkout_service.checkOutBook(1,1)
-    # print(checkout_service.getCheckoutHistory())
-    # checkout_service.returnBook(1)
-    # print(checkout_service.getCheckoutHistory())
+    if len(database_service.get_active_checkouts()) == 0:
+        database_service.checkout_book(1, 1)
 
     # Open GUI
     LibraryGUI(database_service)
