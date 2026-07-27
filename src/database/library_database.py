@@ -2,6 +2,7 @@ import sqlite3
 from contextlib import closing
 from pathlib import Path
 from typing import Any, Optional
+import sys
 
 
 class LibraryDatabase:
@@ -10,9 +11,16 @@ class LibraryDatabase:
     # ==========================================================
 
     def __init__(self, database_path: Optional[str] = None) -> None:
+        # When frozen by PyInstaller the executable location is used as the base
+        # so that bundled `data/` next to the exe is found. Otherwise use the
+        # project root (two parents up from this file).
         if database_path is None:
-            project_root = Path(__file__).resolve().parents[2]
-            database_path = str(project_root / "data" / "library.db")
+            if getattr(sys, "frozen", False):
+                base_dir = Path(sys.executable).parent
+            else:
+                base_dir = Path(__file__).resolve().parents[2]
+
+            database_path = str(base_dir / "data" / "library.db")
 
         self.database_path = database_path
 
