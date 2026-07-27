@@ -32,7 +32,7 @@ class Theme:
 class LibraryGUI:
     def __init__(self, database):
         self.root = tk.Tk()
-        self.root.title("Library Inventory")
+        self.root.title("BookVault")
         self.root.geometry("1392x904")
         self.root.configure(bg=Theme.CONTENT_BG)
         self.root.minsize(900, 600)
@@ -73,7 +73,7 @@ class LibraryGUI:
     def create_sidebar(self):
         title = tk.Label(
             self.sidebar,
-            text="📚 Library",
+            text="📚 BookVault",
             bg=Theme.SIDEBAR_BG,
             fg="white",
             font=(Theme.FONT_FAMILY, 16, "bold"),
@@ -177,7 +177,7 @@ class LibraryGUI:
         self.clear_content()
         self.set_active_nav("Home")
 
-        self.page_header("Dashboard", "Overview of your library system")
+        self.page_header("Dashboard", "Overview of BookVault")
 
         stats_frame = tk.Frame(self.content_frame, bg=Theme.CONTENT_BG)
         stats_frame.pack(fill="x", padx=30, pady=10)
