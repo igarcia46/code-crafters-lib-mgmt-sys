@@ -9,9 +9,7 @@ from src.services.CheckoutService import CheckoutService
 from src.ui.book_view import BookView
 from src.ui.member_view import MemberView
 from src.ui.checkout_view import CheckoutView
-
-# from src.ui.book_view import BookView
-# from src.ui.reports_view import ReportsView
+from src.ui.reports_view import ReportsView
 
 
 # ---------------------------------------------------------------------------
@@ -35,7 +33,7 @@ class LibraryGUI:
     def __init__(self, database):
         self.root = tk.Tk()
         self.root.title("Library Inventory")
-        self.root.geometry("1100x715")
+        self.root.geometry("1392x904")
         self.root.configure(bg=Theme.CONTENT_BG)
         self.root.minsize(900, 600)
 
@@ -321,10 +319,10 @@ class LibraryGUI:
         self.clear_content()
         self.set_active_nav("Reports")
         self.page_header("Reports", "Library statistics and insights")
-        tk.Label(
+
+        view = ReportsView(
             self.content_frame,
-            text="Reports view coming soon.",
-            bg=Theme.CONTENT_BG,
-            fg=Theme.TEXT_MUTED,
-            font=self.font_subheading,
-        ).pack(padx=30, pady=20, anchor="w")
+            self.book_service,
+            self.checkout_service,
+        )
+        view.pack(fill="both", expand=True, padx=30, pady=(0, 20))
