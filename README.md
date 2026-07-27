@@ -2,12 +2,11 @@
 A repository for BookVault, a library management system developed by 'Code Crafters', a group of Ivy Tech students enrolled in the SDEV 265 course.
 
 ## Downloading and running the release
-If you want to use BookVault without installing Python or building from source, download the latest release from the GitHub Releases page.
+If you want to use BookVault without installing Python or building from source, download the latest release [here](https://github.com/igarcia46/code-crafters-lib-mgmt-sys/releases).
 
-1. Go to the repository Releases page.
-2. Download the latest `BookVault` release ZIP file.
-3. Extract the ZIP file to the desired location on your PC.
-4. Open the folder and run `BookVault.exe`.
+1. Download the latest `BookVault.zip` release ZIP file by clicking on it.
+2. Extract the ZIP file to the desired location on your PC.
+3. Open the folder and run `BookVault.exe`.
 
 > Note: The application will be seeded with test data.
 
