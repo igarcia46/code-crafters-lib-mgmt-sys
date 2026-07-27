@@ -32,7 +32,7 @@ class Theme:
 class LibraryGUI:
     def __init__(self, database):
         self.root = tk.Tk()
-        self.root.title("Library Inventory")
+        self.root.title("BookVault")
         self.root.geometry("1392x904")
         self.root.configure(bg=Theme.CONTENT_BG)
         self.root.minsize(900, 600)
@@ -73,7 +73,7 @@ class LibraryGUI:
     def create_sidebar(self):
         title = tk.Label(
             self.sidebar,
-            text="📚 Library",
+            text="📚 BookVault",
             bg=Theme.SIDEBAR_BG,
             fg="white",
             font=(Theme.FONT_FAMILY, 16, "bold"),
@@ -177,7 +177,7 @@ class LibraryGUI:
         self.clear_content()
         self.set_active_nav("Home")
 
-        self.page_header("Dashboard", "Overview of your library system")
+        self.page_header("Dashboard", "Overview of BookVault")
 
         stats_frame = tk.Frame(self.content_frame, bg=Theme.CONTENT_BG)
         stats_frame.pack(fill="x", padx=30, pady=10)
@@ -222,6 +222,9 @@ class LibraryGUI:
             side="left", padx=(0, 10)
         )
         self.make_action_button(quick_row, "View Checkouts", self.show_checkouts).pack(
+            side="left", padx=(0, 10)
+        )
+        self.make_action_button(quick_row, "View Reports", self.show_reports).pack(
             side="left", padx=(0, 10)
         )
 
@@ -283,13 +286,6 @@ class LibraryGUI:
         self.book_service,
     )
         view.pack(fill="both", expand=True, padx=30, pady=(0, 20))
-        tk.Label(
-            self.content_frame,
-            text="Book management view coming soon.",
-            bg=Theme.CONTENT_BG,
-            fg=Theme.TEXT_MUTED,
-            font=self.font_subheading,
-        ).pack(padx=30, pady=20, anchor="w")
 
     def show_members(self):
         self.clear_content()
