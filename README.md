@@ -1,8 +1,8 @@
 # code-crafters-lib-mgmt-sys
 A repository for BookVault, a library management system developed by 'Code Crafters', a group of Ivy Tech students enrolled in the SDEV 265 course.
 
-## Downloading and running the release
-If you want to use BookVault without installing Python or building from source, download the latest release [here](https://github.com/igarcia46/code-crafters-lib-mgmt-sys/releases).
+## Downloading the app
+If you want to use BookVault, download the latest release [here](https://github.com/igarcia46/code-crafters-lib-mgmt-sys/releases).
 
 1. Download the latest `BookVault.zip` release ZIP file by clicking on it.
 2. Extract the ZIP file to the desired location on your PC.
