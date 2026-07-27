@@ -224,6 +224,9 @@ class LibraryGUI:
         self.make_action_button(quick_row, "View Checkouts", self.show_checkouts).pack(
             side="left", padx=(0, 10)
         )
+        self.make_action_button(quick_row, "View Reports", self.show_reports).pack(
+            side="left", padx=(0, 10)
+        )
 
     def make_stat_card(self, parent, label, value, color, column):
         card = tk.Frame(
@@ -283,13 +286,6 @@ class LibraryGUI:
         self.book_service,
     )
         view.pack(fill="both", expand=True, padx=30, pady=(0, 20))
-        tk.Label(
-            self.content_frame,
-            text="Book management view coming soon.",
-            bg=Theme.CONTENT_BG,
-            fg=Theme.TEXT_MUTED,
-            font=self.font_subheading,
-        ).pack(padx=30, pady=20, anchor="w")
 
     def show_members(self):
         self.clear_content()
