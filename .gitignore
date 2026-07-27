@@ -14,3 +14,15 @@ __pycache__/
 *.db
 *.sqlite
 *.sqlite3
+
+# Build and packaging outputs
+dist/
+build/
+dist/*.zip
+
+# Virtual environment
+.venv/
+.env/
+
+# Generated PyInstaller spec
+BookVault.spec
